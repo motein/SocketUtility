@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.socketutility</groupId>
+	<artifactId>com.socketutility.parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<properties>
+		<main.basedir>${project.basedir}</main.basedir>
+		<main.mingw>C:\Program Files\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev0\mingw64\bin</main.mingw>
+		<manifest-location>META-INF</manifest-location>
+		<tycho-version>1.0.0</tycho-version>
+		<eclipse>http://download.eclipse.org/releases/oxygen</eclipse>
+		<main.javahome>C:\Program Files\Java\jdk1.8.0_151</main.javahome>
+	</properties>
+	
+	<modules>
+		<module>SocketUtilityByJava</module>
+		<module>SocketUtilityByCpp</module>
+	</modules>
+
+	<build>
+		<directory>${project.basedir}/target</directory>
+		<testSourceDirectory>${project.build.directory}/test-classes</testSourceDirectory>
+		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<resources>
+		    <resource>
+				<directory>${project.basedir}/src</directory>
+			</resource>
+		</resources>
+		<!--make sure all the unit test files can be copied to places-->
+		<testResources>				
+			<testResource>
+				<directory>${project.basedir}/src</directory>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>			
+			</plugin>			
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+				  <pomDependencies>consider</pomDependencies>
+				</configuration>
+			</plugin>
+			
+			<!--make sure all the unit test can compile-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+					<encoding>UTF-8</encoding>
+                </configuration>
+				<executions>
+				  <execution>
+					<id>compiletests</id>
+					<phase>test-compile</phase>
+					<goals>
+					  <goal>testCompile</goal>
+					</goals>
+				  </execution>
+				</executions>
+			</plugin>
+		  
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<dependencies>
+					 <!--Custom provider and engine for Junit 5 to surefire-->
+					 <dependency>
+						 <groupId>org.junit.platform</groupId>
+						 <artifactId>junit-platform-surefire-provider</artifactId>
+						 <version>1.0.1</version>
+					 </dependency>
+					 <dependency>
+						 <groupId>org.junit.jupiter</groupId>
+						 <artifactId>junit-jupiter-engine</artifactId>
+						 <version>5.0.1</version>
+					 </dependency>
+				</dependencies>
+				<configuration>
+					  <argLine>${argLine}</argLine>
+					  <includes>
+						<include>**/*Test.java</include>
+					  </includes>
+				</configuration>									
+			</plugin>			
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>oxygen</id>
+			<layout>p2</layout>
+			<url>${eclipse}</url>
+		</repository>		
+	</repositories>
+
+
+</project>
