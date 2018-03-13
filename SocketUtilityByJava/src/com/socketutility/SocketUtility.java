@@ -92,6 +92,7 @@ public class SocketUtility {
                     }
                 }
             }
+            
             in = new DataInputStream(new BufferedInputStream(socket.getInputStream(), STREAM_BUFFER_SIZE));
             out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream(), STREAM_BUFFER_SIZE));
             bufferedSize = 0;
