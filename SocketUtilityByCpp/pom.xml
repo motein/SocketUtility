@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.socketutilityn</groupId>
+	<artifactId>socketutility</artifactId>	
+	<packaging>nar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<properties>
+		<main.mingw>C:\Program Files\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev0\mingw64\bin</main.mingw>
+	</properties>
+	
+    <build>
+        <defaultGoal>nar-compile</defaultGoal>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.github.maven-nar</groupId>
+                <artifactId>nar-maven-plugin</artifactId>
+                <version>3.5.2</version>
+                <extensions>true</extensions>
+				<configuration>
+					  <!--name of the output-->
+					  <output>${project.artifactId}</output>					  
+					  <cpp>
+						<name>g++</name>
+						<!--To avoid conflicts with Cygwin-->
+						<toolPath>${main.mingw}</toolPath>
+						<includes>
+							<include>**/*.cpp</include>
+							<include>**/*.h</include>
+						</includes>
+						<options>
+							<option>-DMINGW</option>
+							<option>-O0</option>
+							<option>-g3</option>						
+							<option>-fmessage-length=0</option>											
+						</options>
+					  </cpp>
+					  <linker>
+						<name>g++</name>
+						<toolPath>${main.mingw}</toolPath>						
+						<sysLibs>
+							<sysLib>								
+								<name>wsock32</name>
+							</sysLib>
+							<sysLib>								
+								<name>rpcrt4</name>
+							</sysLib>
+						</sysLibs>
+					  </linker>
+					  <libraries>
+						<library>
+						  <type>shared</type>						  
+						</library>
+					  </libraries>
+				</configuration>				
+            </plugin>            
+        </plugins>
+    </build>	
+	
+</project>
